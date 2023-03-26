@@ -11,7 +11,7 @@ import (
 
 // 全件取得
 func TestFindAll(t *testing.T) {
-	ctx, transaction := tests.TestDBInit(t)
+	ctx, transaction := tests.TestDBInit()
 
 	defer transaction.Rollback()
 
@@ -29,7 +29,7 @@ func TestFindAll(t *testing.T) {
 // カテゴリIDで問合せ
 func TestFindById(t *testing.T) {
 
-	ctx, transaction := tests.TestDBInit(t)
+	ctx, transaction := tests.TestDBInit()
 
 	defer transaction.Rollback()
 

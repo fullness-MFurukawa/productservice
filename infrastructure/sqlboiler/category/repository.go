@@ -21,7 +21,7 @@ type CategoryRepositoryImpl struct {
 func (rep *CategoryRepositoryImpl) FindAll(ctx context.Context, tran *sql.Tx) ([]category.Category, error) {
 	results, err := models.Categories().All(ctx, tran)
 	if err != nil {
-		return nil, infrastructure.NewInternalError(err.Error())
+		return nil, infrastructure.NewInternalError("内部エラー", err)
 	}
 	var categories []category.Category
 	for _, result := range results {
@@ -41,7 +41,7 @@ func (rep *CategoryRepositoryImpl) FindById(ctx context.Context, tran *sql.Tx, i
 		if err.Error() == "sql: no rows in result set" {
 			return nil, nil
 		} else {
-			return nil, infrastructure.NewInternalError(err.Error())
+			return nil, infrastructure.NewInternalError("内部エラー", err)
 		}
 	}
 	category_inf, err := rep.adapter.Restore(result)

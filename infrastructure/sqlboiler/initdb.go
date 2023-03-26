@@ -13,10 +13,11 @@ import (
 // 2023/03/25
 type SqlBiolderInitDB struct{}
 
+// コネクションプールを生成する
 func (instance SqlBiolderInitDB) Init(interface{}) interface{} {
 	conn, err := sql.Open("mysql", "root:password@tcp(mysql:3306)/sample_db")
 	if err != nil {
-		panic(err)
+		panic(err) // エラーが発生したらパニックにする
 	}
 	// コネクションプールの設定
 	conn.SetMaxIdleConns(10)                   // 初期接続数
@@ -24,6 +25,6 @@ func (instance SqlBiolderInitDB) Init(interface{}) interface{} {
 	conn.SetConnMaxLifetime(300 * time.Second) // 最大利用生存期間
 
 	boil.SetDB(conn)      // グローバルコネクション設定
-	boil.DebugMode = true // デバッグモードに指定生成されたSQLを出力する
+	boil.DebugMode = true // デバッグモードに設定 生成されたSQLを出力する
 	return nil
 }
