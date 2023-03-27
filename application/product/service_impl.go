@@ -75,3 +75,51 @@ func (service *ProductServiceIml) Add(product *product.Product) error {
 		return nil
 	}
 }
+
+// 商品の内容を変更する
+func (service *ProductServiceIml) Change(product *product.Product) (bool, error) {
+	// 空のContextを生成する
+	context := context.Background()
+	// トランザクションを開始する
+	transaction, err := boil.BeginTx(context, nil)
+	if err != nil {
+		return false, application.NewServiceError(err.Error())
+	}
+	// 商品を更新する
+	result, upd_err := service.repository.UpdateById(context, transaction, product)
+	if upd_err != nil {
+		transaction.Rollback() //　トランザクションをロールバックする
+		return false, application.NewServiceError(upd_err.Error())
+	}
+	if !result && upd_err == nil { // 更新対象が見つからない
+		transaction.Rollback() //　トランザクションをロールバックする
+		return false, application.NewServiceError(
+			fmt.Sprintf("商品番号:%sの商品は存在しないため変更できませんでした。", product.ProductId().Value()))
+	}
+	transaction.Commit()
+	return result, nil
+}
+
+// 商品を削除
+func (service *ProductServiceIml) Remove(productId *product.ProductId) (bool, error) {
+	// 空のContextを生成する
+	context := context.Background()
+	// トランザクションを開始する
+	transaction, err := boil.BeginTx(context, nil)
+	if err != nil {
+		return false, application.NewServiceError(err.Error())
+	}
+	// 商品を削除する
+	result, del_err := service.repository.DeleteById(context, transaction, productId)
+	if del_err != nil {
+		transaction.Rollback() //　トランザクションをロールバックする
+		return false, application.NewServiceError(del_err.Error())
+	}
+	if !result && del_err == nil { // 削除対象が見つからない
+		transaction.Rollback() //　トランザクションをロールバックする
+		return false, application.NewServiceError(
+			fmt.Sprintf("商品番号:%sの商品は存在しないため削除できませんでした。", productId.Value()))
+	}
+	transaction.Commit()
+	return result, nil
+}

@@ -63,3 +63,41 @@ func TestAdd(t *testing.T) {
 	err := service.Add(product)
 	assert.Nil(t, err)
 }
+
+// 商品の内容を変更する
+func TestChange(t *testing.T) {
+	tests.TestDBInit() // コネクションプールを初期化する
+	// ProductServiceのインスタンスを取得する
+	service := NewProductService(rep.NewProductRepositoryImpl())
+
+	// 変更対象の商品が見つからない場合
+	upd_category, _ := category.BuildCategory("b1524011-b6af-417e-8bf2-f449dd58b5c0", "文房具")
+	upd_product, _ := product.BuildProduct("6a7c0248-45e7-4443-97d8-6454320b6000", "商品-XYZ", uint32(300), upd_category)
+	result, err := service.Change(upd_product)
+	assert.False(t, result)
+	assert.Equal(t, err.Error(), "商品番号:6a7c0248-45e7-4443-97d8-6454320b6000の商品は存在しないため変更できませんでした。")
+
+	// 変更対象の商品が存在する場合
+	upd_category, _ = category.BuildCategory("b1524011-b6af-417e-8bf2-f449dd58b5c0", "文房具")
+	upd_product, _ = product.BuildProduct("6a7c0248-45e7-4443-97d8-6454320b6dbe", "商品-XYZ", uint32(300), upd_category)
+	result, err = service.Change(upd_product)
+	assert.True(t, result)
+	assert.Nil(t, err)
+}
+
+// 商品を削除する
+func TestRemove(t *testing.T) {
+	tests.TestDBInit() // コネクションプールを初期化する
+	// ProductServiceのインスタンスを取得する
+	service := NewProductService(rep.NewProductRepositoryImpl())
+	// 存在しない商品番号を指定した場合
+	productId, _ := product.NewProductId("6a7c0248-45e7-4443-97d8-6454320b6000")
+	result, err := service.Remove(productId)
+	assert.False(t, result)
+	assert.Equal(t, err.Error(), "商品番号:6a7c0248-45e7-4443-97d8-6454320b6000の商品は存在しないため削除できませんでした。")
+	// 存在する商品番号を指定した場合
+	productId, _ = product.NewProductId("6a7c0248-45e7-4443-97d8-6454320b6dbe")
+	result, err = service.Remove(productId)
+	assert.True(t, result)
+	assert.Nil(t, err)
+}

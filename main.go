@@ -1,7 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"sample-service/infrastructure/sqlboiler/tests"
+	"sample-service/presentation/container"
+)
 
 func main() {
-	fmt.Println("aaaa")
+	tests.TestDBInit()
+	container.Execute()
 }
