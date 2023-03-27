@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"sample-service/application/product"
+	"sample-service/infrastructure/sqlboiler/tests"
 	"time"
 
 	"go.uber.org/fx"
@@ -37,6 +38,9 @@ func executeProductServiceList(service product.ProductService) {
 
 // applicationまでの依存関係を確認する
 func Execute() {
+	// Connection Poolの生成
+	tests.TestDBInit()
+	fmt.Println("Connection Poolの生成!")
 	app := fx.New(
 		fx.Options(
 			product.SrvModeul,
