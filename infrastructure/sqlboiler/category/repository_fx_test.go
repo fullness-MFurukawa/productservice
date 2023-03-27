@@ -21,7 +21,7 @@ func testSelectAll(rep category.CategoryRepository) {
 
 func TestCategoryRepository(t *testing.T) {
 	app := fxtest.New(t,
-		fx.Options(CategoryModule),
+		fx.Options(Module),
 		fx.Invoke(testSelectAll),
 	)
 	defer app.RequireStart().RequireStop()
