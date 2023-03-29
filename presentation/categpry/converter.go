@@ -1,4 +1,4 @@
-package gin
+package categpry
 
 import (
 	"sample-service/domain"
@@ -7,10 +7,10 @@ import (
 
 // CategoryDtoとCategory Entityの相互変換Adapter
 // 2023/03/28
-type CategoryDtoAdapter struct{}
+type CategoryDtoConverter struct{}
 
 // Category EntityからCategoryDtoを生成する
-func (adapter *CategoryDtoAdapter) Convert(entity interface{}) (interface{}, error) {
+func (adapter *CategoryDtoConverter) Convert(entity interface{}) (interface{}, error) {
 	source, ok := entity.(*category.Category)
 	if !ok {
 		return nil, domain.NewDomainError("指定されたEntityはCategoryではありません。")
@@ -20,7 +20,7 @@ func (adapter *CategoryDtoAdapter) Convert(entity interface{}) (interface{}, err
 }
 
 // CategoryDtoからCategory Entityを再構築する
-func (adapater *CategoryDtoAdapter) Restore(model interface{}) (interface{}, error) {
+func (adapater *CategoryDtoConverter) Restore(model interface{}) (interface{}, error) {
 	source, ok := model.(*CategoryDto)
 	if !ok {
 		return nil, domain.NewDomainError("指定されたmodelはCategoryDtoではありません。")
@@ -33,6 +33,6 @@ func (adapater *CategoryDtoAdapter) Restore(model interface{}) (interface{}, err
 }
 
 // コンストラクタ
-func NewCategoryDtoAdapter() domain.EntityAdapter {
-	return &CategoryDtoAdapter{}
+func NewCategoryDtoConverter() domain.EntityConverter {
+	return &CategoryDtoConverter{}
 }

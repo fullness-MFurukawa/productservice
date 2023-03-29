@@ -14,7 +14,7 @@ import (
 // CategoryテーブルアクセスRepositoryインターフェースの実装
 // 2023/03/25
 type CategoryRepositoryImpl struct {
-	adapter domain.EntityAdapter // Categoryデータ変換Adapter
+	converter domain.EntityConverter // Categoryデータ変換Converter
 }
 
 // カテゴリを全件取得する
@@ -25,7 +25,7 @@ func (rep *CategoryRepositoryImpl) FindAll(ctx context.Context, tran *sql.Tx) ([
 	}
 	var categories []category.Category
 	for _, result := range results {
-		category_inf, err := rep.adapter.Restore(result)
+		category_inf, err := rep.converter.Restore(result)
 		if err != nil {
 			return nil, err
 		}
@@ -44,7 +44,7 @@ func (rep *CategoryRepositoryImpl) FindById(ctx context.Context, tran *sql.Tx, i
 			return nil, infrastructure.NewInternalError("内部エラー", err)
 		}
 	}
-	category_inf, err := rep.adapter.Restore(result)
+	category_inf, err := rep.converter.Restore(result)
 	if err != nil {
 		return nil, err
 	}
@@ -52,5 +52,5 @@ func (rep *CategoryRepositoryImpl) FindById(ctx context.Context, tran *sql.Tx, i
 	return &category, nil
 }
 func NewCategoryRepositoryImpl() category.CategoryRepository {
-	return &CategoryRepositoryImpl{adapter: NewCategoryAdapater()}
+	return &CategoryRepositoryImpl{converter: NewCategoryConverter()}
 }

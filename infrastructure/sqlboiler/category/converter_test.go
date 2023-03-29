@@ -14,7 +14,7 @@ func TestConvert(t *testing.T) {
 	if err != nil {
 		assert.Fail(t, err.Error())
 	}
-	adapter := NewCategoryAdapater()
+	adapter := NewCategoryConverter()
 	model, _ := adapter.Convert(category)
 	fmt.Println(model)
 	assert.True(t, true)

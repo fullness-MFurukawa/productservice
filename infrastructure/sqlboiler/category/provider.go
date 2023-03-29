@@ -5,15 +5,15 @@ import (
 	"sample-service/domain/category"
 )
 
-// CategoryAdapterImplとCategoryRepositoryImplのインスタンス生成
+// CategoryConverterImplとCategoryRepositoryImplのインスタンス生成
 // 2023/03/25
 
-// CategoryAdapterImplのインスタンス生成
-func NewCategoryAdapater() domain.EntityAdapter {
-	return &CategoryAdapterImpl{}
+// CategoryConverterImplのインスタンス生成
+func NewCategoryConverter() domain.EntityConverter {
+	return &CategoryConverterImpl{}
 }
 
 // CategoryFRepositoryImplのインスタンス生成
-func NewCategoryRepositiry(adapter domain.EntityAdapter) category.CategoryRepository {
-	return &CategoryRepositoryImpl{adapter: adapter}
+func NewCategoryRepositiry(converter domain.EntityConverter) category.CategoryRepository {
+	return &CategoryRepositoryImpl{converter: converter}
 }

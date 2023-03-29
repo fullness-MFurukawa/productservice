@@ -1,4 +1,4 @@
-package gin
+package categpry
 
 import (
 	"fmt"
@@ -14,7 +14,7 @@ func TestConvert(t *testing.T) {
 	if err != nil {
 		assert.Fail(t, err.Error())
 	}
-	adapter := NewCategoryDtoAdapter()
+	adapter := NewCategoryDtoConverter()
 	dto, _ := adapter.Convert(category)
 	fmt.Println(dto)
 	assert.NotNil(t, dto)
@@ -23,7 +23,7 @@ func TestConvert(t *testing.T) {
 // CategoryDtoからCategory Entityへの変換
 func TestRestore(t *testing.T) {
 	dto := NewCategoryDto("b1524011-b6af-417e-8bf2-f449dd58b5c0", "文房具")
-	adapter := NewCategoryDtoAdapter()
+	adapter := NewCategoryDtoConverter()
 	entity, _ := adapter.Restore(dto)
 	fmt.Println(entity)
 	assert.NotNil(t, entity)

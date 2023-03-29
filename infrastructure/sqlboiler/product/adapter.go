@@ -10,10 +10,10 @@ import (
 // Entity Product からSqlBoilerのモデルへ変換
 // SqlBoilerのModelからEntity Product への変換
 // 2023/03/27
-type ProductAdapterImpl struct{}
+type ProductConverterImpl struct{}
 
 // Entity ProductからsqlboilerのModel Productへ変換する
-func (adapter *ProductAdapterImpl) Convert(entity interface{}) (interface{}, error) {
+func (adapter *ProductConverterImpl) Convert(entity interface{}) (interface{}, error) {
 	source, ok := entity.(*product.Product) // Entity Productへ型変換
 	if !ok {                                // 型変換できない?
 		return nil, domain.NewDomainError("指定されたEntityはProductではありません。")
@@ -29,7 +29,7 @@ func (adapter *ProductAdapterImpl) Convert(entity interface{}) (interface{}, err
 }
 
 // sqlboilerのModel Productから任意のEntity Productへ変換する
-func (adapter *ProductAdapterImpl) Restore(model interface{}) (interface{}, error) {
+func (adapter *ProductConverterImpl) Restore(model interface{}) (interface{}, error) {
 	source, ok := model.(*models.Product) // SqlBoilerのProduct Modelに変換
 	if !ok {
 		return nil, domain.NewDomainError("指定されたmodelはProductではありません。")

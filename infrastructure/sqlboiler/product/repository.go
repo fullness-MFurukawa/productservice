@@ -15,7 +15,7 @@ import (
 // ProductRepositoryインターフェースの実装
 // 2023/03/27
 type ProductRepositoryImpl struct {
-	adapter domain.EntityAdapter // Categoryデータ変換Adapter
+	converter domain.EntityConverter // Categoryデータ変換Adapter
 }
 
 // すべての商品を取得する
@@ -28,7 +28,7 @@ func (rep *ProductRepositoryImpl) FindAll(ctx context.Context, tran *sql.Tx) ([]
 	var products []product.Product // Entity Productのスライス
 	for _, result := range results {
 		// modelからEntity Productに変換する
-		product_inf, err := rep.adapter.Restore(result)
+		product_inf, err := rep.converter.Restore(result)
 		if err != nil {
 			return nil, err
 		}
@@ -47,7 +47,7 @@ func (rep *ProductRepositoryImpl) FindByNameLike(ctx context.Context, tran *sql.
 	var products []product.Product // Entity Productのスライス
 	for _, result := range results {
 		// modelからEntity Productに変換する
-		product_inf, err := rep.adapter.Restore(result)
+		product_inf, err := rep.converter.Restore(result)
 		if err != nil {
 			return nil, err
 		}
@@ -72,7 +72,7 @@ func (rep *ProductRepositoryImpl) Exist(ctx context.Context, tran *sql.Tx, name 
 
 // 新しい商品を登録する
 func (rep *ProductRepositoryImpl) Create(ctx context.Context, tran *sql.Tx, product *product.Product) error {
-	model, err := rep.adapter.Convert(product)
+	model, err := rep.converter.Convert(product)
 	if err != nil {
 		return err
 	}
@@ -122,5 +122,5 @@ func (rep *ProductRepositoryImpl) DeleteById(ctx context.Context, tran *sql.Tx, 
 
 // コンストラクタ
 func NewProductRepositoryImpl() product.ProductRepositiry {
-	return &ProductRepositoryImpl{adapter: NewProductAdapter()}
+	return &ProductRepositoryImpl{converter: NewProductAdapter()}
 }
