@@ -8,6 +8,6 @@ import (
 func main() {
 	// SqlBuilderのコネクションプールを生成
 	sqlboiler.NewSqlBiolderInitDB().Init(nil)
-	// Ginの起動
-	gin.RunGinServer()
+	// Ginのセットアップと起動
+	gin.SetupGinServer().Run(":8081")
 }

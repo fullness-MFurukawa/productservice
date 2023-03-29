@@ -9,7 +9,7 @@ import (
 
 // GinのデフォルトRouter生成とServerの実行
 // 2023/03/28
-func RunGinServer() {
+func SetupGinServer() *gin.Engine {
 	router := gin.Default() // デフォルトRouterを利用する
 	// CORS設定 (cross-origin sharing standard)
 	config := cors.DefaultConfig()
@@ -23,6 +23,8 @@ func RunGinServer() {
 	productgrp := router.Group("/product")
 	{
 		productgrp.GET("/list", procutctrl.List)
+		productgrp.GET("/search", procutctrl.SearchKeyword)
+		productgrp.GET("/search/:keyword", procutctrl.SearchKeyword)
 	}
-	router.Run(":8081")
+	return router
 }
