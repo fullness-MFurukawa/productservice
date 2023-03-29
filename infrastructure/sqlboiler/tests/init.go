@@ -10,7 +10,7 @@ import (
 
 func TestDBInit() (context.Context, *sql.Tx) {
 	// データベース接続とConenction Poolの生成
-	_ = sqlboiler.SqlBiolderInitDB{}.Init(nil)
+	_ = sqlboiler.NewSqlBiolderInitDB().Init(nil)
 	ctx := context.Background()
 	transaction, _ := boil.BeginTx(ctx, nil)
 	return ctx, transaction

@@ -1,6 +1,8 @@
 package gin
 
 import (
+	"sample-service/presentation/product"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
@@ -15,5 +17,12 @@ func RunGinServer() {
 	config.AllowMethods = []string{"GET", "POST", "DELETE"}
 	router.Use(cors.New(config)) // CORS設定をRouterに登録する
 
-	router.Run()
+	// ProductControllerの生成
+	procutctrl := product.NewProductController()
+	// ルーティングの設とリクエストハンドラのマッピング
+	productgrp := router.Group("/product")
+	{
+		productgrp.GET("/list", procutctrl.List)
+	}
+	router.Run(":8081")
 }

@@ -11,7 +11,7 @@ import (
 type CategoryConverterImpl struct{}
 
 // Entity CategoryからsqlboilerのModel Categoryへ変換する
-func (adapter *CategoryConverterImpl) Convert(entity interface{}) (interface{}, error) {
+func (converter *CategoryConverterImpl) Convert(entity any) (any, error) {
 	source, ok := entity.(category.Category)
 	if !ok {
 		return nil, domain.NewDomainError("指定されたEntityはCategoryではありません。")
@@ -21,7 +21,7 @@ func (adapter *CategoryConverterImpl) Convert(entity interface{}) (interface{}, 
 }
 
 // sqlboilerのModel Categoryから任意のEntity Categoryへ変換する
-func (adapter *CategoryConverterImpl) Restore(model interface{}) (interface{}, error) {
+func (converter *CategoryConverterImpl) Restore(model any) (any, error) {
 	source, ok := model.(*models.Category)
 	if !ok {
 		return nil, domain.NewDomainError("指定されたmodelはCategoryではありません。")

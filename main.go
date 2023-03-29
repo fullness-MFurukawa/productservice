@@ -1,17 +1,13 @@
 package main
 
 import (
-	"net/http"
-
-	"github.com/gin-gonic/gin"
+	"sample-service/infrastructure/sqlboiler"
+	"sample-service/presentation/gin"
 )
 
 func main() {
-	engine := gin.Default()
-	engine.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "hello world",
-		})
-	})
-	engine.Run(":8080")
+	// SqlBuilderのコネクションプールを生成
+	sqlboiler.NewSqlBiolderInitDB().Init(nil)
+	// Ginの起動
+	gin.RunGinServer()
 }

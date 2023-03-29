@@ -20,8 +20,8 @@ func TestConvert(t *testing.T) {
 	if err != nil {
 		assert.Fail(t, err.Error())
 	}
-	adapter := NewProductAdapter()
-	result, err := adapter.Convert(product)
+	converter := NewProductAdapter()
+	result, err := converter.Convert(product)
 	if err != nil {
 		assert.Fail(t, err.Error())
 	}
@@ -44,8 +44,8 @@ func TestRestore(t *testing.T) {
 	// ジョインするカテゴリを設定する
 	product.R.NewStruct().Category = category
 	fmt.Println(product)
-	adapter := NewProductAdapter()
-	result, err := adapter.Restore(product)
+	converter := NewProductAdapter()
+	result, err := converter.Restore(product)
 	if err != nil {
 		assert.Fail(t, err.Error())
 	}

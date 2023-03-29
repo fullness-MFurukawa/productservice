@@ -2,6 +2,7 @@ package sqlboiler
 
 import (
 	"database/sql"
+	"sample-service/infrastructure"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -14,7 +15,7 @@ import (
 type SqlBiolderInitDB struct{}
 
 // コネクションプールを生成する
-func (instance SqlBiolderInitDB) Init(interface{}) interface{} {
+func (instance *SqlBiolderInitDB) Init(interface{}) interface{} {
 	conn, err := sql.Open("mysql", "root:password@tcp(mysql:3306)/sample_db")
 	if err != nil {
 		panic(err) // エラーが発生したらパニックにする
@@ -27,4 +28,10 @@ func (instance SqlBiolderInitDB) Init(interface{}) interface{} {
 	boil.SetDB(conn)      // グローバルコネクション設定
 	boil.DebugMode = true // デバッグモードに設定 生成されたSQLを出力する
 	return nil
+}
+
+// コンストラクタ
+// 後で全体構成を考慮してリファクタリングする
+func NewSqlBiolderInitDB() infrastructure.InitDB {
+	return &SqlBiolderInitDB{}
 }

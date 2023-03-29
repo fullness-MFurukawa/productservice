@@ -11,7 +11,7 @@ type ProductDtoConverter struct{}
 
 // domain.EntityAdapterインターフェースのメソッド
 // Product EntityからProductDtoを生成する
-func (adapter *ProductDtoConverter) Convert(entity interface{}) (interface{}, error) {
+func (converter *ProductDtoConverter) Convert(entity any) (any, error) {
 	source, ok := entity.(*product.Product)
 	if !ok {
 		return nil, domain.NewDomainError("指定されたEntityはProductではありません。")
@@ -23,7 +23,7 @@ func (adapter *ProductDtoConverter) Convert(entity interface{}) (interface{}, er
 
 // domain.EntityAdapterインターフェースのメソッド
 // ProductDtoからProduct Entityを再構築する
-func (adapter *ProductDtoConverter) Restore(model interface{}) (interface{}, error) {
+func (converter *ProductDtoConverter) Restore(model any) (any, error) {
 	source, ok := model.(*ProductDto)
 	if !ok {
 		return nil, domain.NewDomainError("指定されたmodelはProductDtoではありません。")
@@ -35,21 +35,32 @@ func (adapter *ProductDtoConverter) Restore(model interface{}) (interface{}, err
 	return *product, nil
 }
 
-// ProductDtoAdapterのメソッド
+// domain.EntitiesAdapterインターフェースのメソッド
 // ProductのスライスからProductDtoのスライスを生成して返す
 // 2023/03/29
-func (adapter *ProductDtoConverter) Converts(products []*product.Product) []*ProductDto {
+func (converter *ProductDtoConverter) MultiConvert(entities any) (any, error) {
+	products, ok := entities.([]product.Product)
+	if !ok {
+		return nil, domain.NewDomainError("指定されたentitiesは[]Productではありません。")
+	}
 	// ProductDtoを格納するスライスを生成する
-	var dtos = make([]*ProductDto, 0, len(products))
+	var dtos = make([]ProductDto, 0, len(products))
 	// 引数productsからProductDtoのスライスを生成する
 	for _, product := range products {
 		dto := NewProductDto(product.ProductId().Value(), product.ProductName().Value(), product.ProductPrice().Value())
-		dtos = append(dtos, dto)
+		dtos = append(dtos, *dto)
 	}
-	return dtos
+	return dtos, nil
+}
+
+// domain.EntitiesAdapterインターフェースのメソッド
+// ProductDyoのスライスからProductのスライスを生成して返す
+// 2023/03/29
+func (converter *ProductDtoConverter) MultiRestore(models any) (any, error) {
+	return nil, nil
 }
 
 // コンストラクタ
-func NewProductDtoConverter() domain.EntityConverter {
+func NewProductDtoConverter() domain.EntitiesConverter {
 	return &ProductDtoConverter{}
 }
