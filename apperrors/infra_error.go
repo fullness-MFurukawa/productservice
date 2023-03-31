@@ -1,4 +1,4 @@
-package infrastructure
+package apperrors
 
 // 内部エラーを表すエラー型
 type InternalError struct {

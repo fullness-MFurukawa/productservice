@@ -1,4 +1,4 @@
-package error
+package apperrors
 
 // アプリケーションサービスエラーを表すエラー型
 // 2030/03/27

@@ -1,4 +1,4 @@
-package domain
+package apperrors
 
 // ドメインルール違反を表すエラー型
 // 2030-03-23

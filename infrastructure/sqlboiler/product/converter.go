@@ -1,7 +1,7 @@
 package product
 
 import (
-	"sample-service/domain"
+	"sample-service/apperrors"
 	"sample-service/domain/category"
 	"sample-service/domain/product"
 	"sample-service/infrastructure/sqlboiler/models"
@@ -16,7 +16,7 @@ type ProductConverterImpl struct{}
 func (converter *ProductConverterImpl) Convert(entity any) (any, error) {
 	source, ok := entity.(*product.Product) // Entity Productへ型変換
 	if !ok {                                // 型変換できない?
-		return nil, domain.NewDomainError("指定されたEntityはProductではありません。")
+		return nil, apperrors.NewDomainError("指定されたEntityはProductではありません。")
 	}
 	product := models.Product{
 		ID:         0,
@@ -32,7 +32,7 @@ func (converter *ProductConverterImpl) Convert(entity any) (any, error) {
 func (converter *ProductConverterImpl) Restore(model any) (any, error) {
 	source, ok := model.(*models.Product) // SqlBoilerのProduct Modelに変換
 	if !ok {
-		return nil, domain.NewDomainError("指定されたmodelはProductではありません。")
+		return nil, apperrors.NewDomainError("指定されたmodelはProductではありません。")
 	}
 	if source.R != nil { // カテゴリあり
 		category, err := category.BuildCategory(source.R.Category.ObjID, source.R.Category.Name)

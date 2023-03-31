@@ -3,7 +3,7 @@ package product
 import (
 	"fmt"
 	"reflect"
-	"sample-service/domain"
+	"sample-service/apperrors"
 	"sample-service/domain/category"
 
 	"github.com/google/uuid"
@@ -22,7 +22,7 @@ type Product struct {
 func NewProduct(name string, price uint32, category *category.Category) (*Product, error) {
 	uid, u_err := uuid.NewRandom()
 	if u_err != nil {
-		return nil, domain.NewDomainError(u_err.Error())
+		return nil, apperrors.NewDomainError(u_err.Error())
 	}
 	id, err := NewProductId(uid.String())
 	if err != nil {
@@ -84,7 +84,7 @@ func (entity Product) String() string {
 func (entity *Product) Equals(obj interface{}) (bool, error) {
 	object, ok := obj.(*Product)
 	if !ok {
-		return false, domain.NewDomainError("Productの等価検証で、異なる型が指定されました。")
+		return false, apperrors.NewDomainError("Productの等価検証で、異なる型が指定されました。")
 	}
 	// DeepEqualsで値を比較する
 	result := reflect.DeepEqual(entity.productId, object.productId)

@@ -3,7 +3,7 @@ package category
 import (
 	"fmt"
 	"reflect"
-	"sample-service/domain"
+	"sample-service/apperrors"
 
 	"github.com/google/uuid"
 )
@@ -18,7 +18,7 @@ type Category struct {
 func NewCategory(category_name string) (*Category, error) {
 	uid, u_err := uuid.NewRandom()
 	if u_err != nil {
-		return nil, domain.NewDomainError(u_err.Error())
+		return nil, apperrors.NewDomainError(u_err.Error())
 	}
 	id, err := NewCategoryId(uid.String())
 	if err != nil {
@@ -62,7 +62,7 @@ func (entity Category) String() string {
 func (entity *Category) Equals(obj interface{}) (bool, error) {
 	object, ok := obj.(*Category)
 	if !ok {
-		return false, domain.NewDomainError("Categoryの等価検証で、異なる型が指定されました。")
+		return false, apperrors.NewDomainError("Categoryの等価検証で、異なる型が指定されました。")
 	}
 	// DeepEqualsで値を比較する
 	result := reflect.DeepEqual(entity.categoryId, object.categoryId)

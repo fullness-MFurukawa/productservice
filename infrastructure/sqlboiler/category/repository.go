@@ -3,9 +3,9 @@ package category
 import (
 	"context"
 	"database/sql"
+	"sample-service/apperrors"
 	"sample-service/domain"
 	"sample-service/domain/category"
-	"sample-service/infrastructure"
 	"sample-service/infrastructure/sqlboiler/models"
 
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
@@ -21,7 +21,7 @@ type CategoryRepositoryImpl struct {
 func (rep *CategoryRepositoryImpl) FindAll(ctx context.Context, tran *sql.Tx) ([]category.Category, error) {
 	results, err := models.Categories().All(ctx, tran)
 	if err != nil {
-		return nil, infrastructure.NewInternalError("内部エラー", err)
+		return nil, apperrors.NewInternalError("内部エラー", err)
 	}
 	var categories []category.Category
 	for _, result := range results {
@@ -41,7 +41,7 @@ func (rep *CategoryRepositoryImpl) FindById(ctx context.Context, tran *sql.Tx, i
 		if err.Error() == "sql: no rows in result set" {
 			return nil, nil
 		} else {
-			return nil, infrastructure.NewInternalError("内部エラー", err)
+			return nil, apperrors.NewInternalError("内部エラー", err)
 		}
 	}
 	category_inf, err := rep.converter.Restore(result)

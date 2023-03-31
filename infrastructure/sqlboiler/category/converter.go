@@ -1,7 +1,7 @@
 package category
 
 import (
-	"sample-service/domain"
+	"sample-service/apperrors"
 	"sample-service/domain/category"
 	"sample-service/infrastructure/sqlboiler/models"
 )
@@ -14,7 +14,7 @@ type CategoryConverterImpl struct{}
 func (converter *CategoryConverterImpl) Convert(entity any) (any, error) {
 	source, ok := entity.(category.Category)
 	if !ok {
-		return nil, domain.NewDomainError("指定されたEntityはCategoryではありません。")
+		return nil, apperrors.NewDomainError("指定されたEntityはCategoryではありません。")
 	}
 	category := models.Category{ObjID: source.CategoryId().Value(), Name: source.CategoryName().Value()}
 	return category, nil
@@ -24,7 +24,7 @@ func (converter *CategoryConverterImpl) Convert(entity any) (any, error) {
 func (converter *CategoryConverterImpl) Restore(model any) (any, error) {
 	source, ok := model.(*models.Category)
 	if !ok {
-		return nil, domain.NewDomainError("指定されたmodelはCategoryではありません。")
+		return nil, apperrors.NewDomainError("指定されたmodelはCategoryではありません。")
 	}
 	category, err := category.BuildCategory(source.ObjID, source.Name)
 	if err != nil {

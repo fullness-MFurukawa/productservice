@@ -3,9 +3,9 @@ package product
 import (
 	"context"
 	"database/sql"
+	"sample-service/apperrors"
 	"sample-service/domain"
 	"sample-service/domain/product"
-	"sample-service/infrastructure"
 	"sample-service/infrastructure/sqlboiler/models"
 
 	"github.com/volatiletech/sqlboiler/v4/boil"
@@ -23,7 +23,7 @@ func (rep *ProductRepositoryImpl) FindAll(ctx context.Context, tran *sql.Tx) ([]
 	// 商品を全件取得する
 	results, err := models.Products(qm.Load("Category")).All(ctx, tran)
 	if err != nil { // エラーなら内部エラーを通知する
-		return nil, infrastructure.NewInternalError("内部エラー", err)
+		return nil, apperrors.NewInternalError("内部エラー", err)
 	}
 	var products []product.Product // Entity Productのスライス
 	for _, result := range results {
@@ -42,7 +42,7 @@ func (rep *ProductRepositoryImpl) FindAll(ctx context.Context, tran *sql.Tx) ([]
 func (rep *ProductRepositoryImpl) FindByNameLike(ctx context.Context, tran *sql.Tx, keyword string) ([]product.Product, error) {
 	results, err := models.Products(qm.Where("name like ?", keyword), qm.Load("Category")).All(ctx, tran)
 	if err != nil { // エラーなら内部エラーを通知する
-		return nil, infrastructure.NewInternalError("内部エラー", err)
+		return nil, apperrors.NewInternalError("内部エラー", err)
 	}
 	var products []product.Product // Entity Productのスライス
 	for _, result := range results {
@@ -64,7 +64,7 @@ func (rep *ProductRepositoryImpl) Exist(ctx context.Context, tran *sql.Tx, name 
 		if err.Error() == "sql: no rows in result set" {
 			return false, nil
 		} else {
-			return false, infrastructure.NewInternalError("内部エラー", err)
+			return false, apperrors.NewInternalError("内部エラー", err)
 		}
 	}
 	return true, nil
@@ -79,7 +79,7 @@ func (rep *ProductRepositoryImpl) Create(ctx context.Context, tran *sql.Tx, prod
 	product_model := model.(models.Product)
 	ins_err := product_model.Insert(ctx, tran, boil.Infer())
 	if ins_err != nil {
-		return infrastructure.NewInternalError("内部エラー", err)
+		return apperrors.NewInternalError("内部エラー", err)
 	}
 	return nil
 }
@@ -91,14 +91,14 @@ func (rep *ProductRepositoryImpl) UpdateById(ctx context.Context, tran *sql.Tx, 
 		if err.Error() == "sql: no rows in result set" {
 			return false, nil
 		} else {
-			return false, infrastructure.NewInternalError("内部エラー", err)
+			return false, apperrors.NewInternalError("内部エラー", err)
 		}
 	}
 	up_model.Name = product.ProductName().Value()
 	up_model.Price = int(product.ProductPrice().Value())
 	_, err = up_model.Update(ctx, tran, boil.Infer())
 	if err != nil {
-		return false, infrastructure.NewInternalError("内部エラー", err)
+		return false, apperrors.NewInternalError("内部エラー", err)
 	}
 	return true, nil
 }
@@ -110,12 +110,12 @@ func (rep *ProductRepositoryImpl) DeleteById(ctx context.Context, tran *sql.Tx, 
 		if err.Error() == "sql: no rows in result set" {
 			return false, nil
 		} else {
-			return false, infrastructure.NewInternalError("内部エラー", err)
+			return false, apperrors.NewInternalError("内部エラー", err)
 		}
 	}
 	_, del_err := del_model.Delete(ctx, tran)
 	if del_err != nil {
-		return false, infrastructure.NewInternalError("内部エラー", err)
+		return false, apperrors.NewInternalError("内部エラー", err)
 	}
 	return true, nil
 }
