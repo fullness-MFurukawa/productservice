@@ -43,7 +43,7 @@ func Execute() {
 	fmt.Println("Connection Poolの生成!")
 	app := fx.New(
 		fx.Options(
-			product.SrvModeul,
+		//product.SrvModeul,
 		),
 		fx.Invoke(assignLifeCycleLogging, executeProductServiceList),
 	)

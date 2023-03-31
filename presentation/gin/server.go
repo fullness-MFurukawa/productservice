@@ -1,30 +1,39 @@
 package gin
 
 import (
+	"context"
+	"fmt"
+	"sample-service/application"
+	"sample-service/infrastructure/sqlboiler"
+	"sample-service/infrastructure/sqlboiler/category"
 	"sample-service/presentation/product"
 
-	"github.com/gin-contrib/cors"
-	"github.com/gin-gonic/gin"
+	"go.uber.org/fx"
 )
 
-// GinのデフォルトRouter生成とServerの実行
-// 2023/03/28
-func SetupGinServer() *gin.Engine {
-	router := gin.Default() // デフォルトRouterを利用する
-	// CORS設定 (cross-origin sharing standard)
-	config := cors.DefaultConfig()
-	config.AllowAllOrigins = true
-	config.AllowMethods = []string{"GET", "POST", "DELETE"}
-	router.Use(cors.New(config)) // CORS設定をRouterに登録する
+// 依存関係の定義
+// 2023/03/31
+var Module = fx.Options(
+	application.Module,
+	fx.Provide(NewHandler, category.NewCategoryConverter, product.NewProductDtoConverter, product.NewProductController),
+	fx.Invoke(RegisterRoutes),
+	fx.Invoke(registerHooks),
+)
 
-	// ProductControllerの生成
-	procutctrl := product.NewProductController()
-	// ルーティングの設とリクエストハンドラのマッピング
-	productgrp := router.Group("/product")
-	{
-		productgrp.GET("/list", procutctrl.List)
-		productgrp.GET("/search", procutctrl.SearchKeyword)
-		productgrp.GET("/search/:keyword", procutctrl.SearchKeyword)
-	}
-	return router
+func registerHooks(lifecycle fx.Lifecycle, h *Handler) {
+	lifecycle.Append(
+		fx.Hook{
+			OnStart: func(context.Context) error {
+				fmt.Println("Starting application Post:8080 !!!")
+				// SqlBiolderのConnection Poolを生成
+				go sqlboiler.NewSqlBiolderInitDB().Init(nil)
+				go h.Gin.Run(":8080") //	Ginの起動
+				return nil
+			},
+			OnStop: func(context.Context) error {
+				fmt.Println("Stopping application !!!")
+				return nil
+			},
+		},
+	)
 }

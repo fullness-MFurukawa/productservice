@@ -1,4 +1,4 @@
-package application
+package error
 
 // アプリケーションサービスエラーを表すエラー型
 // 2030/03/27

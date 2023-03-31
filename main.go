@@ -1,8 +1,9 @@
 package main
 
 import (
-	"sample-service/infrastructure/sqlboiler"
 	"sample-service/presentation/gin"
+
+	"go.uber.org/fx"
 )
 
 // @title 商品アクセスAPIサンプル V1
@@ -20,8 +21,7 @@ import (
 // @host localhost:8081
 // @BasePath /product
 func main() {
-	// SqlBuilderのコネクションプールを生成
-	sqlboiler.NewSqlBiolderInitDB().Init(nil)
-	// Ginのセットアップと起動
-	gin.SetupGinServer().Run(":8081")
+	fx.New(
+		gin.Module,
+	).Run()
 }

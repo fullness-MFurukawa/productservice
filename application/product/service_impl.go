@@ -3,7 +3,7 @@ package product
 import (
 	"context"
 	"fmt"
-	"sample-service/application"
+	apperror "sample-service/application/errors"
 	"sample-service/domain/product"
 
 	"github.com/volatiletech/sqlboiler/v4/boil"
@@ -23,13 +23,13 @@ func (service *ProductServiceIml) List() ([]product.Product, error) {
 	// トランザクションを開始する
 	transaction, err := boil.BeginTx(context, nil)
 	if err != nil {
-		return nil, application.NewServiceError(err.Error())
+		return nil, apperror.NewServiceError(err.Error())
 	}
 
 	// すべての商品を取得する
 	products, err := service.repository.FindAll(context, transaction)
 	if err != nil {
-		return nil, application.NewServiceError(err.Error())
+		return nil, apperror.NewServiceError(err.Error())
 	} else {
 		return products, nil
 	}
@@ -42,15 +42,15 @@ func (service *ProductServiceIml) SearchBykeyword(keyword string) ([]product.Pro
 	// トランザクションを開始する
 	transaction, err := boil.BeginTx(context, nil)
 	if err != nil {
-		return nil, application.NewServiceError(err.Error())
+		return nil, apperror.NewServiceError(err.Error())
 	}
 	// キーワードで商品を検索する
 	products, err := service.repository.FindByNameLike(context, transaction, "%"+keyword+"%")
 	if err != nil {
-		return nil, application.NewServiceError(err.Error())
+		return nil, apperror.NewServiceError(err.Error())
 	}
 	if len(products) == 0 { // キーワードを含む商品が存在しない
-		return products, application.NewServiceError(fmt.Sprintf("キーワード:%sを含む商品は見つかりませんでした。", keyword))
+		return products, apperror.NewServiceError(fmt.Sprintf("キーワード:%sを含む商品は見つかりませんでした。", keyword))
 	} else {
 		return products, nil
 	}
@@ -63,13 +63,13 @@ func (service *ProductServiceIml) Add(product *product.Product) error {
 	// トランザクションを開始する
 	transaction, err := boil.BeginTx(context, nil)
 	if err != nil {
-		return application.NewServiceError(err.Error())
+		return apperror.NewServiceError(err.Error())
 	}
 	// 新商品を永続化する
 	add_err := service.repository.Create(context, transaction, product)
 	if add_err != nil { // 永続化でエラー発生
 		transaction.Rollback() //　トランザクションをロールバックする
-		return application.NewServiceError(add_err.Error())
+		return apperror.NewServiceError(add_err.Error())
 	} else { // 永続化成功
 		transaction.Commit() // トランザクションをコミットする
 		return nil
@@ -83,17 +83,17 @@ func (service *ProductServiceIml) Change(product *product.Product) (bool, error)
 	// トランザクションを開始する
 	transaction, err := boil.BeginTx(context, nil)
 	if err != nil {
-		return false, application.NewServiceError(err.Error())
+		return false, apperror.NewServiceError(err.Error())
 	}
 	// 商品を更新する
 	result, upd_err := service.repository.UpdateById(context, transaction, product)
 	if upd_err != nil {
 		transaction.Rollback() //　トランザクションをロールバックする
-		return false, application.NewServiceError(upd_err.Error())
+		return false, apperror.NewServiceError(upd_err.Error())
 	}
 	if !result && upd_err == nil { // 更新対象が見つからない
 		transaction.Rollback() //　トランザクションをロールバックする
-		return false, application.NewServiceError(
+		return false, apperror.NewServiceError(
 			fmt.Sprintf("商品番号:%sの商品は存在しないため変更できませんでした。", product.ProductId().Value()))
 	}
 	transaction.Commit()
@@ -107,17 +107,17 @@ func (service *ProductServiceIml) Remove(productId *product.ProductId) (bool, er
 	// トランザクションを開始する
 	transaction, err := boil.BeginTx(context, nil)
 	if err != nil {
-		return false, application.NewServiceError(err.Error())
+		return false, apperror.NewServiceError(err.Error())
 	}
 	// 商品を削除する
 	result, del_err := service.repository.DeleteById(context, transaction, productId)
 	if del_err != nil {
 		transaction.Rollback() //　トランザクションをロールバックする
-		return false, application.NewServiceError(del_err.Error())
+		return false, apperror.NewServiceError(del_err.Error())
 	}
 	if !result && del_err == nil { // 削除対象が見つからない
 		transaction.Rollback() //　トランザクションをロールバックする
-		return false, application.NewServiceError(
+		return false, apperror.NewServiceError(
 			fmt.Sprintf("商品番号:%sの商品は存在しないため削除できませんでした。", productId.Value()))
 	}
 	transaction.Commit()
