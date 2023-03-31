@@ -20,7 +20,7 @@ func executeLit(service ProductService) {
 func TestProductService(t *testing.T) {
 	tests.TestDBInit() // コネクションプールを初期化する
 	app := fxtest.New(t,
-		fx.Options(SrvModeul),
+		//	fx.Options(SrvModeul),
 		fx.Invoke(executeLit),
 	)
 	defer app.RequireStart().RequireStop()

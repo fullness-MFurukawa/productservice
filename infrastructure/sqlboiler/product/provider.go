@@ -7,7 +7,7 @@ import (
 
 // Product Entityと他のモデルを変換するAdapterのコンストラクタ
 // 2023/03/27
-func NewProductAdapter() domain.EntityConverter {
+func NewProductConverter() domain.EntityConverter {
 	return &ProductConverterImpl{}
 }
 

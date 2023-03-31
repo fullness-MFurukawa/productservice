@@ -6,7 +6,7 @@ import "sample-service/infrastructure/sqlboiler/product"
 // 2023/03/29
 func NewProductServiceNonFx() ProductService {
 	// Repositoryで利用するProductAdapterの生成
-	adapter := product.NewProductAdapter()
+	adapter := product.NewProductConverter()
 	// ProductServiceで利用するRepositoryの生成
 	repository := product.NewProductRepository(adapter)
 	// ProductRepositoryの生成

@@ -122,5 +122,5 @@ func (rep *ProductRepositoryImpl) DeleteById(ctx context.Context, tran *sql.Tx, 
 
 // コンストラクタ
 func NewProductRepositoryImpl() product.ProductRepositiry {
-	return &ProductRepositoryImpl{converter: NewProductAdapter()}
+	return &ProductRepositoryImpl{converter: NewProductConverter()}
 }

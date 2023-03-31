@@ -16,6 +16,8 @@ func assignLifeCycleLogging(lc fx.Lifecycle) {
 	hook := fx.Hook{
 		OnStart: func(context.Context) error {
 			fmt.Println("Application Start!")
+			// Connection Poolの生成
+			go tests.TestDBInit()
 			return nil
 		},
 		OnStop: func(context.Context) error {
@@ -38,8 +40,6 @@ func executeProductServiceList(service product.ProductService) {
 
 // applicationまでの依存関係を確認する
 func Execute() {
-	// Connection Poolの生成
-	tests.TestDBInit()
 	fmt.Println("Connection Poolの生成!")
 	app := fx.New(
 		fx.Options(

@@ -15,7 +15,7 @@ func TestFindAll(t *testing.T) {
 	// Connection PoolとContextの取得
 	ctx, transaction := tests.TestDBInit()
 	// Repositoryの生成
-	repository := NewProductRepository(NewProductAdapter())
+	repository := NewProductRepository(NewProductConverter())
 
 	defer transaction.Rollback()
 
@@ -31,7 +31,7 @@ func TestFindByNameLike(t *testing.T) {
 	// Connection PoolとContextの取得
 	ctx, transaction := tests.TestDBInit()
 	// Repositoryの生成
-	repository := NewProductRepository(NewProductAdapter())
+	repository := NewProductRepository(NewProductConverter())
 
 	defer transaction.Rollback()
 
@@ -56,7 +56,7 @@ func TestExist(t *testing.T) {
 	// Connection PoolとContextの取得
 	ctx, transaction := tests.TestDBInit()
 	// Repositoryの生成
-	repository := NewProductRepository(NewProductAdapter())
+	repository := NewProductRepository(NewProductConverter())
 
 	defer transaction.Rollback()
 
@@ -76,7 +76,7 @@ func TestCreate(t *testing.T) {
 	// Connection PoolとContextの取得
 	ctx, transaction := tests.TestDBInit()
 	// Repositoryの生成
-	repository := NewProductRepository(NewProductAdapter())
+	repository := NewProductRepository(NewProductConverter())
 
 	defer transaction.Rollback()
 
@@ -96,7 +96,7 @@ func TestUpdateById_OK(t *testing.T) {
 	// Connection PoolとContextの取得
 	ctx, transaction := tests.TestDBInit()
 	// Repositoryの生成
-	repository := NewProductRepository(NewProductAdapter())
+	repository := NewProductRepository(NewProductConverter())
 
 	defer transaction.Rollback()
 
@@ -113,7 +113,7 @@ func TestUpdateById_NG(t *testing.T) {
 	// Connection PoolとContextの取得
 	ctx, transaction := tests.TestDBInit()
 	// Repositoryの生成
-	repository := NewProductRepository(NewProductAdapter())
+	repository := NewProductRepository(NewProductConverter())
 
 	defer transaction.Rollback()
 
@@ -138,7 +138,7 @@ func TestDeleteById(t *testing.T) {
 	// Connection PoolとContextの取得
 	ctx, transaction := tests.TestDBInit()
 	// Repositoryの生成
-	repository := NewProductRepository(NewProductAdapter())
+	repository := NewProductRepository(NewProductConverter())
 
 	defer transaction.Rollback()
 
