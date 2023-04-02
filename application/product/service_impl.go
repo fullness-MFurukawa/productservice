@@ -123,3 +123,9 @@ func (service *ProductServiceIml) Remove(productId *product.ProductId) (bool, er
 	transaction.Commit()
 	return result, nil
 }
+
+// ProductServiceインターフェース実装のインスタンスを生成する
+// 2023/03/27
+func NewProductServiceImpl(repository product.ProductRepositiry) ProductService {
+	return &ProductServiceIml{repository: repository}
+}

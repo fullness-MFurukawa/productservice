@@ -1,9 +1,10 @@
-package product
+package controller
 
 import (
 	"net/http"
 	"sample-service/application/product"
 	"sample-service/domain"
+	"sample-service/presentation/converter"
 
 	"github.com/gin-gonic/gin"
 )
@@ -19,7 +20,7 @@ type ProductController struct {
 func NewProductController() *ProductController {
 	// ProductServiceを構築する
 	service := product.NewProductServiceNonFx()
-	converter := NewProductDtoConverter()
+	converter := converter.NewProductDtoConverter()
 	return &ProductController{service: service, converter: converter}
 }
 

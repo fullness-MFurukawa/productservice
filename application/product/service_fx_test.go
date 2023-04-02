@@ -2,7 +2,7 @@ package product
 
 import (
 	"fmt"
-	"sample-service/infrastructure/sqlboiler/tests"
+	"sample-service/infrastructure/sqlboiler/db"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -18,7 +18,7 @@ func executeLit(service ProductService) {
 }
 
 func TestProductService(t *testing.T) {
-	tests.TestDBInit() // コネクションプールを初期化する
+	db.DBInitForTest() // コネクションプールを初期化する
 	app := fxtest.New(t,
 		//	fx.Options(SrvModeul),
 		fx.Invoke(executeLit),

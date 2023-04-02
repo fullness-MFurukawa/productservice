@@ -1,21 +1,22 @@
-package category
+package repository
 
 import (
 	"fmt"
 	"sample-service/domain/category"
-	"sample-service/infrastructure/sqlboiler/tests"
+	"sample-service/infrastructure/sqlboiler/converter"
+	"sample-service/infrastructure/sqlboiler/db"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
 // 全件取得
-func TestFindAll(t *testing.T) {
-	ctx, transaction := tests.TestDBInit()
+func TestCategoryFindAll(t *testing.T) {
+	ctx, transaction := db.DBInitForTest()
 
 	defer transaction.Rollback()
+	repository := NewCategoryRepositiryImpl(converter.NewCategoryConverterImpl())
 
-	repository := NewCategoryRepositoryImpl()
 	categories, err := repository.FindAll(ctx, transaction)
 	if err != nil {
 		assert.Fail(t, err.Error())
@@ -27,9 +28,9 @@ func TestFindAll(t *testing.T) {
 }
 
 // カテゴリIDで問合せ
-func TestFindById(t *testing.T) {
+func TestCategoryFindById(t *testing.T) {
 
-	ctx, transaction := tests.TestDBInit()
+	ctx, transaction := db.DBInitForTest()
 
 	defer transaction.Rollback()
 
@@ -37,7 +38,7 @@ func TestFindById(t *testing.T) {
 	if err != nil {
 		assert.Fail(t, err.Error())
 	}
-	repository := NewCategoryRepositoryImpl()
+	repository := NewCategoryRepositiryImpl(converter.NewCategoryConverterImpl())
 	result, r_err := repository.FindById(ctx, transaction, id)
 	if r_err != nil {
 		assert.Fail(t, err.Error())

@@ -1,15 +1,18 @@
 package product
 
-import "sample-service/infrastructure/sqlboiler/product"
+import (
+	"sample-service/infrastructure/sqlboiler/converter"
+	"sample-service/infrastructure/sqlboiler/repository"
+)
 
 // fxを使わないProductServiceインスタンス生成
 // 2023/03/29
 func NewProductServiceNonFx() ProductService {
 	// Repositoryで利用するProductAdapterの生成
-	adapter := product.NewProductConverter()
+	converter := converter.NewProductConverterImpl()
 	// ProductServiceで利用するRepositoryの生成
-	repository := product.NewProductRepository(adapter)
+	repository := repository.NewProductRepositoryImpl(converter)
 	// ProductRepositoryの生成
-	service := NewProductService(repository)
+	service := NewProductServiceImpl(repository)
 	return service
 }

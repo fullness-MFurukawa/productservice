@@ -4,18 +4,26 @@ import (
 	"fmt"
 	"sample-service/domain/category"
 	"sample-service/domain/product"
-	rep "sample-service/infrastructure/sqlboiler/product"
-	"sample-service/infrastructure/sqlboiler/tests"
+	"sample-service/infrastructure/sqlboiler/converter"
+	"sample-service/infrastructure/sqlboiler/db"
+	"sample-service/infrastructure/sqlboiler/repository"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
+func createComponent() ProductService {
+	converter := converter.NewProductConverterImpl()
+	repository := repository.NewProductRepositoryImpl(converter)
+	service := NewProductServiceImpl(repository)
+	return service
+}
+
 // 商品の一覧を取得する
 func TestList(t *testing.T) {
-	tests.TestDBInit() // コネクションプールを初期化する
+	db.DBInitForTest() // コネクションプールを初期化する
 	// ProductServiceのインスタンスを取得する
-	service := NewProductService(rep.NewProductRepositoryImpl())
+	service := createComponent()
 	// 商品の一覧を取得する
 	products, err := service.List()
 	if err != nil {
@@ -30,9 +38,9 @@ func TestList(t *testing.T) {
 
 // 指定されたキーワードを含む商品を取得する
 func TestSearchBykeyword(t *testing.T) {
-	tests.TestDBInit() // コネクションプールを初期化する
+	db.DBInitForTest() // コネクションプールを初期化する
 	// ProductServiceのインスタンスを取得する
-	service := NewProductService(rep.NewProductRepositoryImpl())
+	service := createComponent()
 
 	// キーワードを含む商品が存在しない場合
 	products, err := service.SearchBykeyword("あいうえお")
@@ -56,9 +64,9 @@ func TestAdd(t *testing.T) {
 	// テスト用データを作成する
 	category, _ := category.BuildCategory("b1524011-b6af-417e-8bf2-f449dd58b5c0", "文房具")
 	product, _ := product.NewProduct("商品-ABC", uint32(200), category)
-	tests.TestDBInit() // コネクションプールを初期化する
+	db.DBInitForTest() // コネクションプールを初期化する
 	// ProductServiceのインスタンスを取得する
-	service := NewProductService(rep.NewProductRepositoryImpl())
+	service := createComponent()
 	// 商品の登録
 	err := service.Add(product)
 	assert.Nil(t, err)
@@ -66,9 +74,9 @@ func TestAdd(t *testing.T) {
 
 // 商品の内容を変更する
 func TestChange(t *testing.T) {
-	tests.TestDBInit() // コネクションプールを初期化する
+	db.DBInitForTest() // コネクションプールを初期化する
 	// ProductServiceのインスタンスを取得する
-	service := NewProductService(rep.NewProductRepositoryImpl())
+	service := createComponent()
 
 	// 変更対象の商品が見つからない場合
 	upd_category, _ := category.BuildCategory("b1524011-b6af-417e-8bf2-f449dd58b5c0", "文房具")
@@ -87,9 +95,9 @@ func TestChange(t *testing.T) {
 
 // 商品を削除する
 func TestRemove(t *testing.T) {
-	tests.TestDBInit() // コネクションプールを初期化する
+	db.DBInitForTest() // コネクションプールを初期化する
 	// ProductServiceのインスタンスを取得する
-	service := NewProductService(rep.NewProductRepositoryImpl())
+	service := createComponent()
 	// 存在しない商品番号を指定した場合
 	productId, _ := product.NewProductId("6a7c0248-45e7-4443-97d8-6454320b6000")
 	result, err := service.Remove(productId)

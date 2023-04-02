@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 	"sample-service/application/product"
-	"sample-service/infrastructure/sqlboiler/tests"
+	"sample-service/infrastructure/sqlboiler/db"
 	"time"
 
 	"go.uber.org/fx"
@@ -17,7 +17,7 @@ func assignLifeCycleLogging(lc fx.Lifecycle) {
 		OnStart: func(context.Context) error {
 			fmt.Println("Application Start!")
 			// Connection Poolの生成
-			go tests.TestDBInit()
+			go db.DBInitForTest()
 			return nil
 		},
 		OnStop: func(context.Context) error {

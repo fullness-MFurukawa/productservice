@@ -1,4 +1,4 @@
-package category
+package converter
 
 import (
 	"fmt"
@@ -9,12 +9,12 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestConvert(t *testing.T) {
+func TestCategoryConvert(t *testing.T) {
 	category, err := category.BuildCategory("b1524011-b6af-417e-8bf2-f449dd58b5c0", "文房具")
 	if err != nil {
 		assert.Fail(t, err.Error())
 	}
-	adapter := NewCategoryConverter()
+	adapter := NewCategoryConverterImpl()
 	model, _ := adapter.Convert(category)
 	fmt.Println(model)
 	assert.True(t, true)

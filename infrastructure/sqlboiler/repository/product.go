@@ -1,4 +1,4 @@
-package product
+package repository
 
 import (
 	"context"
@@ -120,7 +120,8 @@ func (rep *ProductRepositoryImpl) DeleteById(ctx context.Context, tran *sql.Tx, 
 	return true, nil
 }
 
-// コンストラクタ
-func NewProductRepositoryImpl() product.ProductRepositiry {
-	return &ProductRepositoryImpl{converter: NewProductConverter()}
+// ProductRepositoryインターフェース実装のコンストラクタ
+// 2023/03/27
+func NewProductRepositoryImpl(converter domain.EntityConverter) product.ProductRepositiry {
+	return &ProductRepositoryImpl{converter: converter}
 }

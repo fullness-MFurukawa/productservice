@@ -1,4 +1,4 @@
-package product
+package converter
 
 import (
 	"fmt"
@@ -11,7 +11,7 @@ import (
 )
 
 // Product EntityからSqlBuilderのモデルに変換
-func TestConvert(t *testing.T) {
+func TestProductConvert(t *testing.T) {
 	category, err := category.BuildCategory("b1524011-b6af-417e-8bf2-f449dd58b5c0", "文房具")
 	if err != nil {
 		assert.Fail(t, err.Error())
@@ -20,7 +20,7 @@ func TestConvert(t *testing.T) {
 	if err != nil {
 		assert.Fail(t, err.Error())
 	}
-	converter := NewProductConverter()
+	converter := NewProductConverterImpl()
 	result, err := converter.Convert(product)
 	if err != nil {
 		assert.Fail(t, err.Error())
@@ -30,7 +30,7 @@ func TestConvert(t *testing.T) {
 }
 
 // SqlBuilderのモデルからProduct Entityを復元
-func TestRestore(t *testing.T) {
+func TestProductRestore(t *testing.T) {
 
 	category := &models.Category{
 		ID:    0,
@@ -44,7 +44,7 @@ func TestRestore(t *testing.T) {
 	// ジョインするカテゴリを設定する
 	product.R.NewStruct().Category = category
 	fmt.Println(product)
-	converter := NewProductConverter()
+	converter := NewProductConverterImpl()
 	result, err := converter.Restore(product)
 	if err != nil {
 		assert.Fail(t, err.Error())

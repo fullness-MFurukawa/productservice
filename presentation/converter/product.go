@@ -1,8 +1,10 @@
-package product
+package converter
 
 import (
+	"sample-service/apperrors"
 	"sample-service/domain"
 	"sample-service/domain/product"
+	"sample-service/presentation/dto"
 )
 
 // ProductDtoとProduct Entityの相互変換Adapter
@@ -14,19 +16,19 @@ type ProductDtoConverter struct{}
 func (converter *ProductDtoConverter) Convert(entity any) (any, error) {
 	source, ok := entity.(*product.Product)
 	if !ok {
-		return nil, domain.NewDomainError("指定されたEntityはProductではありません。")
+		return nil, apperrors.NewDomainError("指定されたEntityはProductではありません。")
 	}
 	// ProductDtoのインスタンスを生成する
-	dto := NewProductDto(source.ProductId().Value(), source.ProductName().Value(), source.ProductPrice().Value())
+	dto := dto.NewProductDto(source.ProductId().Value(), source.ProductName().Value(), source.ProductPrice().Value())
 	return dto, nil
 }
 
 // domain.EntityAdapterインターフェースのメソッド
 // ProductDtoからProduct Entityを再構築する
 func (converter *ProductDtoConverter) Restore(model any) (any, error) {
-	source, ok := model.(*ProductDto)
+	source, ok := model.(*dto.ProductDto)
 	if !ok {
-		return nil, domain.NewDomainError("指定されたmodelはProductDtoではありません。")
+		return nil, apperrors.NewDomainError("指定されたmodelはProductDtoではありません。")
 	}
 	product, err := product.BuildProduct(source.Id, source.Name, source.Price, nil)
 	if err != nil {
@@ -41,13 +43,13 @@ func (converter *ProductDtoConverter) Restore(model any) (any, error) {
 func (converter *ProductDtoConverter) MultiConvert(entities any) (any, error) {
 	products, ok := entities.([]product.Product)
 	if !ok {
-		return nil, domain.NewDomainError("指定されたentitiesは[]Productではありません。")
+		return nil, apperrors.NewDomainError("指定されたentitiesは[]Productではありません。")
 	}
 	// ProductDtoを格納するスライスを生成する
-	var dtos = make([]ProductDto, 0, len(products))
+	var dtos = make([]dto.ProductDto, 0, len(products))
 	// 引数productsからProductDtoのスライスを生成する
 	for _, product := range products {
-		dto := NewProductDto(product.ProductId().Value(), product.ProductName().Value(), product.ProductPrice().Value())
+		dto := dto.NewProductDto(product.ProductId().Value(), product.ProductName().Value(), product.ProductPrice().Value())
 		dtos = append(dtos, *dto)
 	}
 	return dtos, nil

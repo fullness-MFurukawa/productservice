@@ -1,21 +1,22 @@
-package product
+package repository
 
 import (
 	"fmt"
 	"sample-service/domain/category"
 	"sample-service/domain/product"
-	"sample-service/infrastructure/sqlboiler/tests"
+	"sample-service/infrastructure/sqlboiler/converter"
+	"sample-service/infrastructure/sqlboiler/db"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func TestFindAll(t *testing.T) {
+func TestProductFindAll(t *testing.T) {
 
 	// Connection PoolとContextの取得
-	ctx, transaction := tests.TestDBInit()
+	ctx, transaction := db.DBInitForTest()
 	// Repositoryの生成
-	repository := NewProductRepository(NewProductConverter())
+	repository := NewProductRepositoryImpl(converter.NewProductConverterImpl())
 
 	defer transaction.Rollback()
 
@@ -27,11 +28,11 @@ func TestFindAll(t *testing.T) {
 	assert.Nil(t, err)
 }
 
-func TestFindByNameLike(t *testing.T) {
+func TestProductFindByNameLike(t *testing.T) {
 	// Connection PoolとContextの取得
-	ctx, transaction := tests.TestDBInit()
+	ctx, transaction := db.DBInitForTest()
 	// Repositoryの生成
-	repository := NewProductRepository(NewProductConverter())
+	repository := NewProductRepositoryImpl(converter.NewProductConverterImpl())
 
 	defer transaction.Rollback()
 
@@ -52,11 +53,11 @@ func TestFindByNameLike(t *testing.T) {
 	assert.Nil(t, results)
 }
 
-func TestExist(t *testing.T) {
+func TestProductExist(t *testing.T) {
 	// Connection PoolとContextの取得
-	ctx, transaction := tests.TestDBInit()
+	ctx, transaction := db.DBInitForTest()
 	// Repositoryの生成
-	repository := NewProductRepository(NewProductConverter())
+	repository := NewProductRepositoryImpl(converter.NewProductConverterImpl())
 
 	defer transaction.Rollback()
 
@@ -71,12 +72,12 @@ func TestExist(t *testing.T) {
 	assert.Nil(t, err)
 }
 
-func TestCreate(t *testing.T) {
+func TestProductCreate(t *testing.T) {
 
 	// Connection PoolとContextの取得
-	ctx, transaction := tests.TestDBInit()
+	ctx, transaction := db.DBInitForTest()
 	// Repositoryの生成
-	repository := NewProductRepository(NewProductConverter())
+	repository := NewProductRepositoryImpl(converter.NewProductConverterImpl())
 
 	defer transaction.Rollback()
 
@@ -92,11 +93,11 @@ func TestCreate(t *testing.T) {
 	assert.Nil(t, result)
 }
 
-func TestUpdateById_OK(t *testing.T) {
+func TestProductUpdateById_OK(t *testing.T) {
 	// Connection PoolとContextの取得
-	ctx, transaction := tests.TestDBInit()
+	ctx, transaction := db.DBInitForTest()
 	// Repositoryの生成
-	repository := NewProductRepository(NewProductConverter())
+	repository := NewProductRepositoryImpl(converter.NewProductConverterImpl())
 
 	defer transaction.Rollback()
 
@@ -109,11 +110,11 @@ func TestUpdateById_OK(t *testing.T) {
 	assert.Nil(t, up_err)
 }
 
-func TestUpdateById_NG(t *testing.T) {
+func TestProductUpdateById_NG(t *testing.T) {
 	// Connection PoolとContextの取得
-	ctx, transaction := tests.TestDBInit()
+	ctx, transaction := db.DBInitForTest()
 	// Repositoryの生成
-	repository := NewProductRepository(NewProductConverter())
+	repository := NewProductRepositoryImpl(converter.NewProductConverterImpl())
 
 	defer transaction.Rollback()
 
@@ -134,11 +135,11 @@ func TestUpdateById_NG(t *testing.T) {
 	assert.Nil(t, u_err)
 }
 
-func TestDeleteById(t *testing.T) {
+func TestProductDeleteById(t *testing.T) {
 	// Connection PoolとContextの取得
-	ctx, transaction := tests.TestDBInit()
+	ctx, transaction := db.DBInitForTest()
 	// Repositoryの生成
-	repository := NewProductRepository(NewProductConverter())
+	repository := NewProductRepositoryImpl(converter.NewProductConverterImpl())
 
 	defer transaction.Rollback()
 

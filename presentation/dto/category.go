@@ -1,4 +1,4 @@
-package categpry
+package dto
 
 // 商品カテゴリを扱うDTO
 // 2023/03/28
