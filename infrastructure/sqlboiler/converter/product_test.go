@@ -20,7 +20,7 @@ func TestProductConvert(t *testing.T) {
 	if err != nil {
 		assert.Fail(t, err.Error())
 	}
-	converter := NewProductConverterImpl()
+	converter := ProductConverterImpl{}
 	result, err := converter.Convert(product)
 	if err != nil {
 		assert.Fail(t, err.Error())
@@ -44,7 +44,7 @@ func TestProductRestore(t *testing.T) {
 	// ジョインするカテゴリを設定する
 	product.R.NewStruct().Category = category
 	fmt.Println(product)
-	converter := NewProductConverterImpl()
+	converter := ProductConverterImpl{}
 	result, err := converter.Restore(product)
 	if err != nil {
 		assert.Fail(t, err.Error())

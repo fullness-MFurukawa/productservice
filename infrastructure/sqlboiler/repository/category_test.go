@@ -10,12 +10,18 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func createCategoryRepository() category.CategoryRepository {
+	converter := &converter.CategoryConverterImpl{}
+	repository := &CategoryRepositoryImpl{converter: converter}
+	return repository
+}
+
 // 全件取得
 func TestCategoryFindAll(t *testing.T) {
 	ctx, transaction := db.DBInitForTest()
 
 	defer transaction.Rollback()
-	repository := NewCategoryRepositiryImpl(converter.NewCategoryConverterImpl())
+	repository := createCategoryRepository()
 
 	categories, err := repository.FindAll(ctx, transaction)
 	if err != nil {
@@ -38,7 +44,7 @@ func TestCategoryFindById(t *testing.T) {
 	if err != nil {
 		assert.Fail(t, err.Error())
 	}
-	repository := NewCategoryRepositiryImpl(converter.NewCategoryConverterImpl())
+	repository := createCategoryRepository()
 	result, r_err := repository.FindById(ctx, transaction, id)
 	if r_err != nil {
 		assert.Fail(t, err.Error())

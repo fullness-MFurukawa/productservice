@@ -51,8 +51,3 @@ func (rep *CategoryRepositoryImpl) FindById(ctx context.Context, tran *sql.Tx, i
 	category := category_inf.(category.Category)
 	return &category, nil
 }
-
-// CategoryFRepositoryImplのインスタンス生成
-func NewCategoryRepositiryImpl(conv domain.EntityConverter) category.CategoryRepository {
-	return &CategoryRepositoryImpl{converter: conv}
-}

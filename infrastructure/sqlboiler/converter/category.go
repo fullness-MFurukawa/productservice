@@ -2,7 +2,6 @@ package converter
 
 import (
 	"sample-service/apperrors"
-	"sample-service/domain"
 	"sample-service/domain/category"
 	"sample-service/infrastructure/sqlboiler/models"
 )
@@ -32,9 +31,4 @@ func (converter *CategoryConverterImpl) Restore(model any) (any, error) {
 		return nil, err
 	}
 	return *category, nil
-}
-
-// CategoryConverterImplのインスタンス生成
-func NewCategoryConverterImpl() domain.EntityConverter {
-	return &CategoryConverterImpl{}
 }

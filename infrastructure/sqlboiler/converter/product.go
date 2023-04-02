@@ -2,7 +2,6 @@ package converter
 
 import (
 	"sample-service/apperrors"
-	"sample-service/domain"
 	"sample-service/domain/category"
 	"sample-service/domain/product"
 	"sample-service/infrastructure/sqlboiler/models"
@@ -52,10 +51,4 @@ func (converter *ProductConverterImpl) Restore(model any) (any, error) {
 		}
 		return *product, nil
 	}
-}
-
-// Product Entityと他のモデルを変換するAdapterのコンストラクタ
-// 2023/03/27
-func NewProductConverterImpl() domain.EntityConverter {
-	return &ProductConverterImpl{}
 }
