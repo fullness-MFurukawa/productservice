@@ -24,10 +24,10 @@ func registerHooks(lifecycle fx.Lifecycle, h *Handler) {
 	lifecycle.Append(
 		fx.Hook{
 			OnStart: func(context.Context) error {
-				fmt.Println("Starting application Post:8080 !!!")
+				fmt.Println("Starting application Post:8081 !!!")
 				// SqlBiolderのConnection Poolを生成
 				go db.NewSqlBiolderInitDB().Init(nil)
-				go h.Gin.Run(":8080") //	Ginの起動
+				go h.Gin.Run(":8081") //	Ginの起動
 				return nil
 			},
 			OnStop: func(context.Context) error {

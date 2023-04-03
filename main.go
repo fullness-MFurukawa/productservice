@@ -1,7 +1,7 @@
 package main
 
 import (
-	"sample-service/presentation/gin"
+	"sample-service/presentation"
 
 	"go.uber.org/fx"
 )
@@ -22,6 +22,6 @@ import (
 // @BasePath /product
 func main() {
 	fx.New(
-		gin.Module,
+		presentation.Module,
 	).Run()
 }

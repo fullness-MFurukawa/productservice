@@ -16,10 +16,10 @@ type ProductController struct {
 }
 
 // コンストラクタ
-func NewProductController() *ProductController {
+// 2023/03/29
+func NewProductController(service product.ProductService,
+	converter domain.EntitiesConverter) *ProductController {
 	// ProductServiceを構築する
-	service := product.NewProductServiceNonFx()
-	converter := NewProductDtoConverter()
 	return &ProductController{service: service, converter: converter}
 }
 
