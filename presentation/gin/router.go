@@ -44,7 +44,7 @@ func RegisterRouter(router *Router, controller *product.ProductController) {
 
 // fxのライフサイクル
 // 2023/04/01
-func RegisterHooks(lifecycle fx.Lifecycle, h *Handler) {
+func RegisterHooks(lifecycle fx.Lifecycle, router *Router) {
 	lifecycle.Append(
 		fx.Hook{
 			// fx開始時の処理
@@ -52,7 +52,7 @@ func RegisterHooks(lifecycle fx.Lifecycle, h *Handler) {
 				fmt.Println("Starting application Post:8081 !!!")
 				// SqlBiolderのConnection Poolを生成
 				go db.NewSqlBiolderInitDB().Init(nil)
-				go h.Gin.Run(":8081") //	Ginの起動
+				go router.Gin.Run(":8081") //	Ginの起動
 				return nil
 			},
 			// fx終了時の処理

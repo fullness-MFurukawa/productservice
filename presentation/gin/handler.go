@@ -1,12 +1,6 @@
 package gin
 
-import (
-	"sample-service/presentation/product"
-
-	"github.com/gin-contrib/cors"
-	"github.com/gin-gonic/gin"
-)
-
+/*
 // Ginを保持するHandler構造体
 // 2023/03/31
 type Handler struct {
@@ -36,3 +30,4 @@ func RegisterRoutes(handler *Handler, controller *product.ProductController) {
 		productgrp.GET("/search/:keyword", controller.SearchKeyword)
 	}
 }
+*/
