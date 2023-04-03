@@ -1,10 +1,9 @@
-package converter
+package category
 
 import (
 	"sample-service/apperrors"
 	"sample-service/domain"
 	"sample-service/domain/category"
-	"sample-service/presentation/dto"
 )
 
 // CategoryDtoとCategory Entityの相互変換Adapter
@@ -12,18 +11,18 @@ import (
 type CategoryDtoConverter struct{}
 
 // Category EntityからCategoryDtoを生成する
-func (adapter *CategoryDtoConverter) Convert(entity interface{}) (interface{}, error) {
+func (adapter *CategoryDtoConverter) Convert(entity any) (any, error) {
 	source, ok := entity.(*category.Category)
 	if !ok {
 		return nil, apperrors.NewDomainError("指定されたEntityはCategoryではありません。")
 	}
-	dto := dto.CategoryDto{Id: source.CategoryId().Value(), Name: source.CategoryName().Value()}
+	dto := CategoryDto{Id: source.CategoryId().Value(), Name: source.CategoryName().Value()}
 	return dto, nil
 }
 
 // CategoryDtoからCategory Entityを再構築する
-func (adapater *CategoryDtoConverter) Restore(model interface{}) (interface{}, error) {
-	source, ok := model.(*dto.CategoryDto)
+func (adapater *CategoryDtoConverter) Restore(model any) (any, error) {
+	source, ok := model.(*CategoryDto)
 	if !ok {
 		return nil, apperrors.NewDomainError("指定されたmodelはCategoryDtoではありません。")
 	}

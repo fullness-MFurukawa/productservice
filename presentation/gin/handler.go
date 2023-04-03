@@ -1,7 +1,7 @@
 package gin
 
 import (
-	"sample-service/presentation/controller"
+	"sample-service/presentation/product"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -27,7 +27,7 @@ func NewHandler() *Handler {
 
 // ルーティングの設定
 // 2023/03/31
-func RegisterRoutes(handler *Handler, controller *controller.ProductController) {
+func RegisterRoutes(handler *Handler, controller *product.ProductController) {
 	// ルーティングの設とリクエストハンドラのマッピング
 	productgrp := handler.Gin.Group("/product")
 	{

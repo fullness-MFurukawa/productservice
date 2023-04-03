@@ -1,4 +1,4 @@
-package dto
+package category
 
 // 商品カテゴリを扱うDTO
 // 2023/03/28

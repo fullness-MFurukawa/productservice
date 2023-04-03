@@ -1,4 +1,4 @@
-package repository
+package category
 
 import (
 	"context"
@@ -50,4 +50,10 @@ func (rep *CategoryRepositoryImpl) FindById(ctx context.Context, tran *sql.Tx, i
 	}
 	category := category_inf.(category.Category)
 	return &category, nil
+}
+
+// コンストラクタ
+// 2023/04/01
+func NewCategoryRepositiryImpl(converter domain.EntityConverter) category.CategoryRepository {
+	return &CategoryRepositoryImpl{converter: converter}
 }

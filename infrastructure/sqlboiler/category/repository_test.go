@@ -1,18 +1,18 @@
-package repository
+package category
 
 import (
 	"fmt"
 	"sample-service/domain/category"
-	"sample-service/infrastructure/sqlboiler/converter"
 	"sample-service/infrastructure/sqlboiler/db"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func createCategoryRepository() category.CategoryRepository {
-	converter := &converter.CategoryConverterImpl{}
-	repository := &CategoryRepositoryImpl{converter: converter}
+// CategoryRepositoryの生成
+// 2023/04/01
+func createRepository() category.CategoryRepository {
+	repository := NewCategoryRepositiryImpl(NewCategoryConverterImpl())
 	return repository
 }
 
@@ -21,7 +21,7 @@ func TestCategoryFindAll(t *testing.T) {
 	ctx, transaction := db.DBInitForTest()
 
 	defer transaction.Rollback()
-	repository := createCategoryRepository()
+	repository := createRepository()
 
 	categories, err := repository.FindAll(ctx, transaction)
 	if err != nil {
@@ -44,7 +44,7 @@ func TestCategoryFindById(t *testing.T) {
 	if err != nil {
 		assert.Fail(t, err.Error())
 	}
-	repository := createCategoryRepository()
+	repository := createRepository()
 	result, r_err := repository.FindById(ctx, transaction, id)
 	if r_err != nil {
 		assert.Fail(t, err.Error())

@@ -1,4 +1,4 @@
-package converter
+package product
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestProductConvert(t *testing.T) {
+func TestConvert(t *testing.T) {
 	product, err := product.BuildProduct("ac413f22-0cf1-490a-9635-7e9ca810e544", "商品-ABC", uint32(200), nil)
 	if err != nil {
 		assert.Fail(t, err.Error())

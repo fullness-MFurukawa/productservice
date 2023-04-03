@@ -1,10 +1,9 @@
-package repository
+package product
 
 import (
 	"fmt"
 	"sample-service/domain/category"
 	"sample-service/domain/product"
-	"sample-service/infrastructure/sqlboiler/converter"
 	"sample-service/infrastructure/sqlboiler/db"
 	"testing"
 
@@ -12,9 +11,8 @@ import (
 )
 
 // Repositoryの生成
-func createProductRepository() product.ProductRepositiry {
-	converter := &converter.ProductConverterImpl{}
-	repository := &ProductRepositoryImpl{converter: converter}
+func createRepository() product.ProductRepositiry {
+	repository := NewProductRepositoryImpl(NewProductConverterImpl())
 	return repository
 }
 
@@ -23,7 +21,7 @@ func TestProductFindAll(t *testing.T) {
 	// Connection PoolとContextの取得
 	ctx, transaction := db.DBInitForTest()
 	// Repositoryの生成
-	repository := createProductRepository()
+	repository := createRepository()
 
 	defer transaction.Rollback()
 
@@ -39,7 +37,7 @@ func TestProductFindByNameLike(t *testing.T) {
 	// Connection PoolとContextの取得
 	ctx, transaction := db.DBInitForTest()
 	// Repositoryの生成
-	repository := createProductRepository()
+	repository := createRepository()
 
 	defer transaction.Rollback()
 
@@ -64,7 +62,7 @@ func TestProductExist(t *testing.T) {
 	// Connection PoolとContextの取得
 	ctx, transaction := db.DBInitForTest()
 	// Repositoryの生成
-	repository := createProductRepository()
+	repository := createRepository()
 
 	defer transaction.Rollback()
 
@@ -84,7 +82,7 @@ func TestProductCreate(t *testing.T) {
 	// Connection PoolとContextの取得
 	ctx, transaction := db.DBInitForTest()
 	// Repositoryの生成
-	repository := createProductRepository()
+	repository := createRepository()
 
 	defer transaction.Rollback()
 
@@ -104,7 +102,7 @@ func TestProductUpdateById_OK(t *testing.T) {
 	// Connection PoolとContextの取得
 	ctx, transaction := db.DBInitForTest()
 	// Repositoryの生成
-	repository := createProductRepository()
+	repository := createRepository()
 
 	defer transaction.Rollback()
 
@@ -121,7 +119,7 @@ func TestProductUpdateById_NG(t *testing.T) {
 	// Connection PoolとContextの取得
 	ctx, transaction := db.DBInitForTest()
 	// Repositoryの生成
-	repository := createProductRepository()
+	repository := createRepository()
 
 	defer transaction.Rollback()
 
@@ -146,7 +144,7 @@ func TestProductDeleteById(t *testing.T) {
 	// Connection PoolとContextの取得
 	ctx, transaction := db.DBInitForTest()
 	// Repositoryの生成
-	repository := createProductRepository()
+	repository := createRepository()
 
 	defer transaction.Rollback()
 

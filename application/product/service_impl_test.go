@@ -4,17 +4,16 @@ import (
 	"fmt"
 	"sample-service/domain/category"
 	"sample-service/domain/product"
-	"sample-service/infrastructure/sqlboiler/converter"
 	"sample-service/infrastructure/sqlboiler/db"
-	"sample-service/infrastructure/sqlboiler/repository"
+	pr "sample-service/infrastructure/sqlboiler/product"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func createComponent() ProductService {
-	converter := converter.NewProductConverterImpl()
-	repository := repository.NewProductRepositoryImpl(converter)
+	converter := pr.NewProductConverterImpl()
+	repository := pr.NewProductRepositoryImpl(converter)
 	service := NewProductServiceImpl(repository)
 	return service
 }

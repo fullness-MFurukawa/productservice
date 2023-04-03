@@ -1,4 +1,4 @@
-package dto
+package product
 
 // 商品を扱うDTO
 // 2023/03/28
