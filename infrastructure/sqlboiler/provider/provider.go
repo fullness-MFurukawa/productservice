@@ -28,8 +28,8 @@ func NewProductConverterFx() domain.EntityConverter {
 }
 
 // CategoryFRepositoryImplのインスタンス生成
-func NewCategoryRepositiryFx(params InfraParams) ca.CategoryRepository {
-	return category.NewCategoryRepositiryImpl(params.CategoryConverter)
+func NewCategoryRepositoryFx(params InfraParams) ca.CategoryRepository {
+	return category.NewCategoryRepositoryImpl(params.CategoryConverter)
 }
 
 // ProductRepositoryインターフェース実装のコンストラクタ

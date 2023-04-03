@@ -15,7 +15,7 @@ import (
 type SqlBiolderInitDB struct{}
 
 // コネクションプールを生成する
-func (instance *SqlBiolderInitDB) Init(interface{}) interface{} {
+func (instance *SqlBiolderInitDB) Init(any) any {
 	conn, err := sql.Open("mysql", "root:password@tcp(mysql:3306)/sample_db")
 	if err != nil {
 		panic(err) // エラーが発生したらパニックにする

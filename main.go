@@ -1,9 +1,7 @@
 package main
 
 import (
-	"sample-service/presentation"
-
-	"go.uber.org/fx"
+	"sample-service/infrastructure/sqlboiler/usecase"
 )
 
 // @title 商品アクセスAPIサンプル V1
@@ -21,7 +19,12 @@ import (
 // @host localhost:8081
 // @BasePath /product
 func main() {
-	fx.New(
-		presentation.Module,
-	).Run()
+	usecase.Execute()
+	/*
+		fx.New(
+			sqlboiler.Module,
+			application.Module,
+			presentation.Module,
+		).Run()
+	*/
 }

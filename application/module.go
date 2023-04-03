@@ -8,8 +8,6 @@ import (
 )
 
 var Module = fx.Options(
-	fx.Provide(
-		sqlboiler.Module,
-		fx.Provide(product.NewProductServiceImpl),
-	),
+	sqlboiler.Module,
+	fx.Provide(product.NewProductServiceImpl),
 )

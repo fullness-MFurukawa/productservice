@@ -1,12 +1,10 @@
 package gin
 
+/*
 import (
 	"context"
 	"fmt"
-	"sample-service/application/provider"
 	"sample-service/infrastructure/sqlboiler/db"
-	"sample-service/presentation/controller"
-	"sample-service/presentation/converter"
 
 	"go.uber.org/fx"
 )
@@ -37,3 +35,4 @@ func registerHooks(lifecycle fx.Lifecycle, h *Handler) {
 		},
 	)
 }
+*/

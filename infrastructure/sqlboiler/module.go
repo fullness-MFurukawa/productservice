@@ -8,7 +8,7 @@ import (
 
 var Module = fx.Options(
 	fx.Provide(
-		provider.NewCategoryRepositiryFx,
+		provider.NewCategoryRepositoryFx,
 		provider.NewProductRepositoryFx,
 		fx.Annotated{Name: "categoryconverter", Target: provider.NewCategoryConverterFx},
 		fx.Annotated{Name: "productconverter", Target: provider.NewProductConverterFx},

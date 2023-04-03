@@ -12,7 +12,7 @@ import (
 // CategoryRepositoryの生成
 // 2023/04/01
 func createRepository() category.CategoryRepository {
-	repository := NewCategoryRepositiryImpl(NewCategoryConverterImpl())
+	repository := NewCategoryRepositoryImpl(NewCategoryConverterImpl())
 	return repository
 }
 

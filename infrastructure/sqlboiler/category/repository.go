@@ -54,6 +54,6 @@ func (rep *CategoryRepositoryImpl) FindById(ctx context.Context, tran *sql.Tx, i
 
 // コンストラクタ
 // 2023/04/01
-func NewCategoryRepositiryImpl(converter domain.EntityConverter) category.CategoryRepository {
+func NewCategoryRepositoryImpl(converter domain.EntityConverter) category.CategoryRepository {
 	return &CategoryRepositoryImpl{converter: converter}
 }
