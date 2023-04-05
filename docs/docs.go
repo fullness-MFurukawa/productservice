@@ -44,6 +44,35 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/search": {
+            "get": {
+                "description": "キーワードで検索した結果を取得する",
+                "consumes": [
+                    "*/*"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "指定されたキーワードで検索した結果を取得する",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "商品キーワード",
+                        "name": "keyword",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "Object"
+                        }
+                    }
+                }
+            }
         }
     }
 }`

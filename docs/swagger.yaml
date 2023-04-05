@@ -26,4 +26,23 @@ paths:
           schema:
             type: Object
       summary: 商品一覧を取得する
+  /search:
+    get:
+      consumes:
+      - '*/*'
+      description: キーワードで検索した結果を取得する
+      parameters:
+      - description: 商品キーワード
+        in: query
+        name: keyword
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: Object
+      summary: 指定されたキーワードで検索した結果を取得する
 swagger: "2.0"

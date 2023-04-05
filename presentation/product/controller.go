@@ -28,7 +28,7 @@ func NewProductController(service product.ProductService,
 // @Description 登録されたすべての商品を取得する
 // @Accept */*
 // @Produce json
-// @Success 200 {Object} []ProductDto
+// @Success 200 {Object} []product.ProductDto
 // @Router /list [get]
 func (controller *ProductController) List(context *gin.Context) {
 	// ProductServiceを利用して商品一覧を取得する
@@ -50,7 +50,14 @@ func (controller *ProductController) List(context *gin.Context) {
 }
 
 // 商品を指定されたキーワードで検索した結果を提供するハンドラ
-// 2023/03/29
+// @Summary 指定されたキーワードで検索した結果を取得する
+// @Info 2023/03/29
+// @Description キーワードで検索した結果を取得する
+// @Accept */*
+// @Produce json
+// @Param keyword query string true "商品キーワード"
+// @Success 200 {Object} []product.ProductDto
+// @Router /search [get]
 func (controller *ProductController) SearchKeyword(context *gin.Context) {
 	var keyword string
 	// パスにあるパラメータを取得
