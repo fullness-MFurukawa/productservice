@@ -1,0 +1,42 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "商品および商品カテゴリを管理するAPIサービス",
+        "title": "商品アクセスAPIサンプル タイプ-1",
+        "termsOfService": "http://localhost:8081",
+        "contact": {
+            "name": "Fullness,Inc.",
+            "url": "https://www.fullness.co.jp",
+            "email": "furukawa@fullness.co.jp"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "https://www.apache.org/licenses/"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8081",
+    "basePath": "/product",
+    "paths": {
+        "/list": {
+            "get": {
+                "description": "登録されたすべての商品を取得する",
+                "consumes": [
+                    "*/*"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "商品一覧を取得する",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "Object"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

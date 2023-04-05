@@ -23,8 +23,13 @@ func NewProductController(service product.ProductService,
 	return &ProductController{service: service, converter: converter}
 }
 
-// 商品一覧を提供するリクエストハンドラ
-// 2023/03/29
+// 商品一覧を提供するハンドラ
+// @Summary 商品一覧を取得する
+// @Description 登録されたすべての商品を取得する
+// @Accept */*
+// @Produce json
+// @Success 200 {Object} []ProductDto
+// @Router /list [get]
 func (controller *ProductController) List(context *gin.Context) {
 	// ProductServiceを利用して商品一覧を取得する
 	products, err := controller.service.List()

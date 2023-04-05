@@ -9,6 +9,11 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/fx"
+
+	_ "sample-service/docs"
+
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 // Ginを保持するHandler構造体
@@ -21,6 +26,9 @@ type Router struct {
 // 2023/03/31
 func NewRouter() *Router {
 	gin := gin.Default() // デフォルトのGinを生成
+	// Open API(Swagger)
+	url := ginSwagger.URL("http://localhost:8081/swagger/doc.json")
+	gin.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 	// CORS設定 (cross-origin sharing standard)
 	config := cors.DefaultConfig()
 	config.AllowAllOrigins = true

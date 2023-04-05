@@ -6,7 +6,7 @@ import (
 	"go.uber.org/fx"
 )
 
-// @title 商品アクセスAPIサンプル V1
+// @title 商品アクセスAPIサンプル タイプ-1
 // @version 1.0
 // @description 商品および商品カテゴリを管理するAPIサービス
 // @termsOfService http://localhost:8081

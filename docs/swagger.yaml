@@ -1,0 +1,29 @@
+basePath: /product
+host: localhost:8081
+info:
+  contact:
+    email: furukawa@fullness.co.jp
+    name: Fullness,Inc.
+    url: https://www.fullness.co.jp
+  description: 商品および商品カテゴリを管理するAPIサービス
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/
+  termsOfService: http://localhost:8081
+  title: 商品アクセスAPIサンプル タイプ-1
+  version: "1.0"
+paths:
+  /list:
+    get:
+      consumes:
+      - '*/*'
+      description: 登録されたすべての商品を取得する
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: Object
+      summary: 商品一覧を取得する
+swagger: "2.0"
