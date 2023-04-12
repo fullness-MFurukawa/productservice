@@ -3,6 +3,7 @@ package product
 import (
 	"sample-service/apperrors"
 	"sample-service/domain"
+	"sample-service/domain/category"
 	"sample-service/domain/product"
 )
 
@@ -18,8 +19,13 @@ func (converter *ProductDtoConverter) Convert(entity any) (any, error) {
 		return nil, apperrors.NewDomainError("指定されたEntityはProductではありません。")
 	}
 	// ProductDtoのインスタンスを生成する
-	dto := NewProductDto(source.ProductId().Value(), source.ProductName().Value(), source.ProductPrice().Value())
-	return dto, nil
+	if source.Category() != nil { // 商品カテゴリが含まれている
+		dto := NewProductDto(source.ProductId().Value(), source.ProductName().Value(), source.ProductPrice().Value(), source.Category().CategoryId().Value())
+		return dto, nil
+	} else { // 商品カテゴリが含まれていない
+		dto := NewProductDto(source.ProductId().Value(), source.ProductName().Value(), source.ProductPrice().Value(), "")
+		return dto, nil
+	}
 }
 
 // domain.EntityAdapterインターフェースのメソッド
@@ -29,11 +35,23 @@ func (converter *ProductDtoConverter) Restore(model any) (any, error) {
 	if !ok {
 		return nil, apperrors.NewDomainError("指定されたmodelはProductDtoではありません。")
 	}
-	product, err := product.BuildProduct(source.Id, source.Name, source.Price, nil)
+	var c *category.Category
+	if source.CategoryId != "" { // 商品カテゴリIDが含まれている
+		// Category Entityを生成する
+		c, _ = category.BuildCategory(source.CategoryId, "")
+	}
+	// ProductDtoからProduct Entityを再構築する
+	var p *product.Product
+	var err error
+	if source.Id == "" { // 商品IDが無い場合(商品の登録)
+		p, err = product.NewProduct(source.Name, source.Price, c)
+	} else {
+		p, err = product.BuildProduct(source.Id, source.Name, source.Price, c)
+	}
 	if err != nil {
 		return nil, err
 	}
-	return *product, nil
+	return p, nil
 }
 
 // domain.EntitiesAdapterインターフェースのメソッド
@@ -48,7 +66,11 @@ func (converter *ProductDtoConverter) MultiConvert(entities any) (any, error) {
 	var dtos = make([]ProductDto, 0, len(products))
 	// 引数productsからProductDtoのスライスを生成する
 	for _, product := range products {
-		dto := NewProductDto(product.ProductId().Value(), product.ProductName().Value(), product.ProductPrice().Value())
+		categoryid := ""
+		if product.Category() != nil { // 商品カテゴリが含まれている
+			categoryid = product.Category().CategoryId().Value()
+		}
+		dto := NewProductDto(product.ProductId().Value(), product.ProductName().Value(), product.ProductPrice().Value(), categoryid)
 		dtos = append(dtos, *dto)
 	}
 	return dtos, nil

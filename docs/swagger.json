@@ -18,6 +18,68 @@
     "host": "localhost:8081",
     "basePath": "/product",
     "paths": {
+        "/add": {
+            "post": {
+                "description": "新商品を登録する",
+                "consumes": [
+                    "*/*"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "新商品を登録する",
+                "parameters": [
+                    {
+                        "description": "商品名、単価、カテゴリ番号",
+                        "name": "newproduct",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/product.ProductDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "Object"
+                        }
+                    }
+                }
+            }
+        },
+        "/change": {
+            "put": {
+                "description": "商品を更新する",
+                "consumes": [
+                    "*/*"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "商品を更新する",
+                "parameters": [
+                    {
+                        "description": "商品番号、商品名、単価",
+                        "name": "newproduct",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/product.ProductDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "Object"
+                        }
+                    }
+                }
+            }
+        },
         "/list": {
             "get": {
                 "description": "登録されたすべての商品を取得する",
@@ -28,6 +90,35 @@
                     "application/json"
                 ],
                 "summary": "商品一覧を取得する",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "Object"
+                        }
+                    }
+                }
+            }
+        },
+        "/remove/{id}": {
+            "delete": {
+                "description": "削除する",
+                "consumes": [
+                    "*/*"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "商品を削除する",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "商品番号",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -63,7 +154,43 @@
                         "schema": {
                             "type": "Object"
                         }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/result.FailureDto"
+                        }
                     }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "product.ProductDto": {
+            "type": "object",
+            "properties": {
+                "category_id": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "integer"
+                }
+            }
+        },
+        "result.FailureDto": {
+            "type": "object",
+            "properties": {
+                "function": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
                 }
             }
         }

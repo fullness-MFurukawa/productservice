@@ -32,7 +32,7 @@ func NewRouter() *Router {
 	// CORS設定 (cross-origin sharing standard)
 	config := cors.DefaultConfig()
 	config.AllowAllOrigins = true
-	config.AllowMethods = []string{"GET", "POST", "DELETE"}
+	config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE"}
 	gin.Use(cors.New(config)) // CORS設定をRouterに登録する
 	router := Router{Gin: gin}
 	return &router
@@ -41,12 +41,15 @@ func NewRouter() *Router {
 // ルーティングの設定
 // 2023/03/31
 func RegisterRouter(router *Router, controller *product.ProductController) {
-	// ルーティングの設とリクエストハンドラのマッピング
+	// ルーティングの設定とリクエストハンドラのマッピング
 	productgrp := router.Gin.Group("/product")
 	{
 		productgrp.GET("/list", controller.List)
 		productgrp.GET("/search", controller.SearchKeyword)
 		productgrp.GET("/search/:keyword", controller.SearchKeyword)
+		productgrp.POST("/add", controller.Add)
+		productgrp.PUT("/change", controller.Change)
+		productgrp.DELETE("/remove/:id", controller.Remove)
 	}
 }
 

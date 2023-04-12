@@ -1,4 +1,23 @@
 basePath: /product
+definitions:
+  product.ProductDto:
+    properties:
+      category_id:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      price:
+        type: integer
+    type: object
+  result.FailureDto:
+    properties:
+      function:
+        type: string
+      message:
+        type: string
+    type: object
 host: localhost:8081
 info:
   contact:
@@ -13,6 +32,46 @@ info:
   title: 商品アクセスAPIサンプル タイプ-1
   version: "1.0"
 paths:
+  /add:
+    post:
+      consumes:
+      - '*/*'
+      description: 新商品を登録する
+      parameters:
+      - description: 商品名、単価、カテゴリ番号
+        in: body
+        name: newproduct
+        required: true
+        schema:
+          $ref: '#/definitions/product.ProductDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: Object
+      summary: 新商品を登録する
+  /change:
+    put:
+      consumes:
+      - '*/*'
+      description: 商品を更新する
+      parameters:
+      - description: 商品番号、商品名、単価
+        in: body
+        name: newproduct
+        required: true
+        schema:
+          $ref: '#/definitions/product.ProductDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: Object
+      summary: 商品を更新する
   /list:
     get:
       consumes:
@@ -26,6 +85,25 @@ paths:
           schema:
             type: Object
       summary: 商品一覧を取得する
+  /remove/{id}:
+    delete:
+      consumes:
+      - '*/*'
+      description: 削除する
+      parameters:
+      - description: 商品番号
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: Object
+      summary: 商品を削除する
   /search:
     get:
       consumes:
@@ -44,5 +122,9 @@ paths:
           description: OK
           schema:
             type: Object
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/result.FailureDto'
       summary: 指定されたキーワードで検索した結果を取得する
 swagger: "2.0"

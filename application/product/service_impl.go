@@ -65,10 +65,19 @@ func (service *ProductServiceIml) Add(product *product.Product) error {
 	if err != nil {
 		return apperrors.NewServiceError(err.Error())
 	}
+
+	// 同じ商品名が存在するか確認する
+	result, ex_err := service.repository.Exist(context, transaction, product.ProductName())
+	if ex_err != nil {
+		return apperrors.NewServiceError(err.Error())
+	}
+	if result { // 既に同じ商品が存在する
+		return apperrors.NewServiceError(fmt.Sprintf("商品名:%sは既に登録済みです。", product.ProductName().Value()))
+	}
+
 	// 新商品を永続化する
 	add_err := service.repository.Create(context, transaction, product)
 	if add_err != nil { // 永続化でエラー発生
-		transaction.Rollback() //　トランザクションをロールバックする
 		return apperrors.NewServiceError(add_err.Error())
 	} else { // 永続化成功
 		transaction.Commit() // トランザクションをコミットする
@@ -92,11 +101,10 @@ func (service *ProductServiceIml) Change(product *product.Product) (bool, error)
 		return false, apperrors.NewServiceError(upd_err.Error())
 	}
 	if !result && upd_err == nil { // 更新対象が見つからない
-		transaction.Rollback() //　トランザクションをロールバックする
 		return false, apperrors.NewServiceError(
 			fmt.Sprintf("商品番号:%sの商品は存在しないため変更できませんでした。", product.ProductId().Value()))
 	}
-	transaction.Commit()
+	transaction.Commit() // トランザクションをコミットする
 	return result, nil
 }
 
@@ -116,11 +124,10 @@ func (service *ProductServiceIml) Remove(productId *product.ProductId) (bool, er
 		return false, apperrors.NewServiceError(del_err.Error())
 	}
 	if !result && del_err == nil { // 削除対象が見つからない
-		transaction.Rollback() //　トランザクションをロールバックする
 		return false, apperrors.NewServiceError(
 			fmt.Sprintf("商品番号:%sの商品は存在しないため削除できませんでした。", productId.Value()))
 	}
-	transaction.Commit()
+	transaction.Commit() // トランザクションをコミットする
 	return result, nil
 }
 
